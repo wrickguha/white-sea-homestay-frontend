@@ -162,6 +162,60 @@ body {
 
 /* Premium V3 Upgrade Styles */
 
+/* Animated mist-glow text shadow for high legibility and cool effect */
+@keyframes dayMistGlow {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(248, 246, 240, 0.95), 0 0 16px rgba(248, 246, 240, 0.6);
+  }
+  50% {
+    text-shadow: 0 0 14px rgba(248, 246, 240, 1), 0 0 28px rgba(248, 246, 240, 0.75), 0 0 6px rgba(212, 175, 55, 0.25);
+  }
+}
+
+@keyframes nightMistGlow {
+  0%, 100% {
+    text-shadow: 0 2px 4px rgba(5, 9, 8, 0.8), 0 4px 10px rgba(5, 9, 8, 0.4);
+  }
+  50% {
+    text-shadow: 0 3px 8px rgba(5, 9, 8, 0.95), 0 6px 20px rgba(5, 9, 8, 0.65), 0 0 6px rgba(212, 175, 55, 0.2);
+  }
+}
+
+.animate-mist-glow {
+  animation: dayMistGlow 4s infinite ease-in-out;
+}
+
+.dark .animate-mist-glow {
+  animation: nightMistGlow 4s infinite ease-in-out;
+}
+
+/* Subtle version for description/small paragraphs */
+@keyframes daySubtleGlow {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(248, 246, 240, 0.9);
+  }
+  50% {
+    text-shadow: 0 0 10px rgba(248, 246, 240, 0.95), 0 0 3px rgba(212, 175, 55, 0.2);
+  }
+}
+
+@keyframes nightSubtleGlow {
+  0%, 100% {
+    text-shadow: 0 1px 2px rgba(5, 9, 8, 0.7);
+  }
+  50% {
+    text-shadow: 0 2px 4px rgba(5, 9, 8, 0.8), 0 0 8px rgba(5, 9, 8, 0.4);
+  }
+}
+
+.animate-subtle-glow {
+  animation: daySubtleGlow 4s infinite ease-in-out;
+}
+
+.dark .animate-subtle-glow {
+  animation: nightSubtleGlow 4s infinite ease-in-out;
+}
+
 /* Modal/Drawers */
 .luxury-modal-backdrop {
   background: rgba(10, 18, 15, 0.5);
