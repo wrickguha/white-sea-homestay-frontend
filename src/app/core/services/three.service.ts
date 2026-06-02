@@ -49,6 +49,7 @@ export class ThreeService {
   
   // Animation ID
   private animationFrameId: number | null = null;
+  private lastFrameTime = 0;
 
   constructor(
     private themeService: ThemeService,
@@ -149,7 +150,8 @@ export class ThreeService {
       powerPreference: 'high-performance'
     });
     this.renderer.setSize(width, height, false);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const isMobile = window.innerWidth < 768;
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.0 : 1.5));
 
     // 4. Lights
     this.ambientLight = new THREE.AmbientLight(0xffffff, isNight ? 0.15 : 0.8);
@@ -798,7 +800,7 @@ export class ThreeService {
     let fireflyOpacity = 0.0;
     let bonfireActive = 0.0;
 
-    // 1. Calculations across the 10 progress ranges
+    // 1. Calculations across the 11 progress ranges (aligned with the V3 content hierarchy)
     if (progress <= 0.1) {
       // Scene 1: Misty Dawn (Teal/Grey sky, dense fog)
       const ratio = progress / 0.1;
@@ -808,35 +810,34 @@ export class ThreeService {
       ambientIntensity = 0.35 + ratio * 0.45; // Fades from 0.35 to 0.8
       sunIntensity = 0.15 + ratio * 1.05;   // Fades from 0.15 to 1.2
     } 
-    else if (progress <= 0.5) {
-      // Scene 2-4: Bright Day
+    else if (progress <= 0.45) {
+      // Scene 2-3: Bright Day
       skyColor.setHex(0xe3ebe7);
       fogColor.setHex(0xe3ebe7);
-      fogDensity = 0.015 - ((progress - 0.1) / 0.4) * 0.008; // Fades down to 0.007
+      fogDensity = 0.015 - ((progress - 0.1) / 0.35) * 0.008; // Fades down to 0.007
       ambientIntensity = 0.8;
       sunIntensity = 1.2;
     } 
-    else if (progress <= 0.65) {
-      // Scene 5: Inside Attic Room (Camera is inside, clear up mist)
+    else if (progress <= 0.58) {
+      // Scene 4 (Rooms): Inside Attic Room (Camera is inside, clear up mist)
       skyColor.setHex(0xdce5e1);
       fogColor.setHex(0xdce5e1);
       fogDensity = 0.003; // Fog fades almost completely inside
       ambientIntensity = 0.75;
       sunIntensity = 1.0;
     } 
-    else if (progress <= 0.75) {
-      // Scene 6: Back to forest (Fog re-emerges slightly)
+    else if (progress <= 0.68) {
+      // Scene 5 (Reviews): Back to forest (Fog re-emerges slightly, late afternoon)
       skyColor.setHex(0xe3ebe7);
       fogColor.setHex(0xe3ebe7);
       fogDensity = 0.007;
       ambientIntensity = 0.8;
       sunIntensity = 1.2;
     } 
-    else if (progress <= 0.82) {
-      // Scene 7: Sunset / Golden Dusk transition
-      const ratio = (progress - 0.75) / 0.07; // 0 to 1
+    else if (progress <= 0.78) {
+      // Scene 6 (Experiences): Sunset / Golden Dusk transition
+      const ratio = (progress - 0.68) / 0.10; // 0 to 1
       
-      // Interpolate sky colors: Mint Day -> Golden Orange -> Deep Purple/Navy
       const cDay = new THREE.Color(0xe3ebe7);
       const cSunset = new THREE.Color(0xd97736);
       const cDusk = new THREE.Color(0x2f2142);
@@ -848,16 +849,32 @@ export class ThreeService {
       }
       
       fogColor.copy(skyColor);
-      fogDensity = 0.007 + ratio * 0.002; // Fog thickens slightly
+      fogDensity = 0.007 + ratio * 0.002;
       ambientIntensity = 0.8 - ratio * 0.6; // 0.8 down to 0.2
       sunIntensity = 1.2 - ratio * 1.2;     // 1.2 down to 0
-      moonIntensity = ratio * 0.3;          // Rise moon light slightly
-      starOpacity = ratio * 0.2;            // Stars begin to fade in
+      moonIntensity = ratio * 0.3;
+      starOpacity = ratio * 0.2;
     } 
-    else if (progress <= 0.96) {
-      // Scene 8-9: Starry Night
-      const ratio = (progress - 0.82) / 0.14; // 0 to 1
-      skyColor.setHex(0x06090c); // Pitch night
+    else if (progress <= 0.90) {
+      // Scene 7-8 (Host Story / Gallery): Dusk to Night transition
+      const ratio = (progress - 0.78) / 0.12; // 0 to 1
+      const cDusk = new THREE.Color(0x2f2142);
+      const cNight = new THREE.Color(0x06090c);
+      
+      skyColor.copy(cDusk).lerp(cNight, ratio);
+      fogColor.copy(skyColor);
+      
+      fogDensity = 0.009;
+      ambientIntensity = 0.2 - ratio * 0.05; // 0.2 down to 0.15
+      sunIntensity = 0.0;
+      moonIntensity = 0.3 + ratio * 0.45;    // 0.3 to 0.75
+      starOpacity = 0.2 + ratio * 0.8;       // 0.2 to 1.0
+      fireflyOpacity = ratio * 0.85;
+      bonfireActive = ratio;
+    }
+    else if (progress <= 0.98) {
+      // Scene 9-10 (Location / Booking): Starry Night
+      skyColor.setHex(0x06090c);
       fogColor.setHex(0x06090c);
       fogDensity = 0.009;
       ambientIntensity = 0.15;
@@ -868,20 +885,19 @@ export class ThreeService {
       bonfireActive = 1.0;
     } 
     else {
-      // Scene 10: Sunrise glow (Night transitions back to Dawn/Gold)
-      const ratio = (progress - 0.96) / 0.04; // 0 to 1
+      // Scene 11: Sunrise glow (Night transitions back to Dawn/Gold)
+      const ratio = (progress - 0.98) / 0.02; // 0 to 1
       const cNight = new THREE.Color(0x06090c);
       const cSunrise = new THREE.Color(0xd47f3b);
-      const cGoldDay = new THREE.Color(0xe3ebe7);
 
       skyColor.copy(cNight).lerp(cSunrise, ratio);
       fogColor.copy(skyColor);
       
-      fogDensity = 0.009 + ratio * 0.005; // morning mist
-      ambientIntensity = 0.15 + ratio * 0.6; // rises
-      sunIntensity = ratio * 1.1; // sun rises
-      moonIntensity = 0.75 - ratio * 0.75; // moon fades
-      starOpacity = 1.0 - ratio; // stars fade
+      fogDensity = 0.009 + ratio * 0.005;
+      ambientIntensity = 0.15 + ratio * 0.6;
+      sunIntensity = ratio * 1.1;
+      moonIntensity = 0.75 - ratio * 0.75;
+      starOpacity = 1.0 - ratio;
       fireflyOpacity = 0.85 - ratio;
       bonfireActive = 1.0 - ratio;
     }
@@ -915,6 +931,15 @@ export class ThreeService {
     this.animationFrameId = requestAnimationFrame(this.animate);
 
     if (!this.renderer || !this.scene || !this.camera) return;
+
+    // Throttle rendering loop on mobile to preserve CPU/GPU battery
+    const now = performance.now();
+    const isMobile = window.innerWidth < 768;
+    const fpsInterval = isMobile ? 33.33 : 16.67; // ~30fps on mobile, ~60fps on desktop
+    const elapsed = now - this.lastFrameTime;
+
+    if (elapsed < fpsInterval) return;
+    this.lastFrameTime = now;
 
     const time = Date.now() * 0.001;
 

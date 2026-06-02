@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit, PLATFORM_ID, Inject, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit, PLATFORM_ID, Inject, NgZone, HostListener } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -33,19 +33,106 @@ import * as THREE from 'three';
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   rooms: Room[] = [];
   
-  // Custom travel trail spots
-  attractions = [
-    { name: 'Dowhill Pine Forest', desc: 'Mysterious, misty hiking trails surrounded by towering cryptomeria trees.', time: '5 mins away' },
-    { name: 'Margaret\'s Hope Tea Garden', desc: 'Lush green valley estates producing fine Darjeeling tea.', time: '15 mins away' },
-    { name: 'Darjeeling Himalayan Toy Train', desc: 'A UNESCO World Heritage steam engine winding through Kurseong.', time: '10 mins away' },
-    { name: 'Eagle\'s Craig Viewpoint', desc: 'Spectacular panoramic sunset views over mountains and plains.', time: '12 mins away' }
+  // Custom travel itineraries
+  itineraries = [
+    {
+      title: 'The Misty Pine Trail',
+      tag: 'Nature Walk & Mindfulness',
+      distance: '1.2 km from property',
+      duration: '2 Hours',
+      difficulty: 'Easy Walk',
+      desc: 'Wander through tall pine trees wrapped in drifting mountain mist. Perfect for slow mornings.',
+      image: 'assets/images/experiences/forest.jpg',
+      timeline: [
+        { time: '08:00 AM', event: 'Departure from Homestay', detail: 'Warm mountain tea to kick off your morning.' },
+        { time: '08:30 AM', event: 'Pine Canopy Trail', detail: 'A slow walk surrounded by towering pine trees.' },
+        { time: '09:15 AM', event: 'Misty Viewpoint Meditation', detail: 'Pause at Eagle\'s Craig for quiet breathing.' },
+        { time: '10:00 AM', event: 'Local Breakfast Return', detail: 'Host Prakash serves fire-roasted flatbreads.' }
+      ]
+    },
+    {
+      title: 'The Tea & Heritage Valley',
+      tag: 'Local Culture & Tasting',
+      distance: '3.5 km from property',
+      duration: '4 Hours',
+      difficulty: 'Moderate Hike',
+      desc: 'Explore historical tea gardens, watch local tea leaves plucking, and sample premium tea blends.',
+      image: 'assets/images/experiences/tea-gardens.jpg',
+      timeline: [
+        { time: '01:30 PM', event: 'Garden Drive & Walk', detail: 'Scenic descent through Margaret\'s Hope Valley.' },
+        { time: '02:15 PM', event: 'Interactive Plucking', detail: 'Learn traditional leaf plucking with local experts.' },
+        { time: '03:00 PM', event: 'Heritage Tea Tasting', detail: 'Private session tasting first-flush black teas.' },
+        { time: '04:30 PM', event: 'Dusk Return Journey', detail: 'Catch the fading golden light across the terraced valleys.' }
+      ]
+    },
+    {
+      title: 'The Himalayan Railway Trail',
+      tag: 'UNESCO Heritage Adventure',
+      distance: '2.1 km from property',
+      duration: '3 Hours',
+      difficulty: 'Easy Walk',
+      desc: 'Chase the iconic steam engine train winding along the mountain ridges of Kurseong.',
+      image: 'assets/images/experiences/train.jpg',
+      timeline: [
+        { time: '10:30 AM', event: 'Walk to Railway Track', detail: 'Follow a scenic path leading directly to the historic tracks.' },
+        { time: '11:15 AM', event: 'Toy Train Crossing', detail: 'Hear the whistle blow as the steam engine passes.' },
+        { time: '12:00 PM', event: 'Kurseong Station Museum', detail: 'Discover photographs and maps from the British Era.' },
+        { time: '01:15 PM', event: 'Return to Sanctuary', detail: 'Warm up by the stone fireplace.' }
+      ]
+    }
   ];
+  selectedItineraryIndex = 0;
 
-  testimonials = [
-    { name: 'Aarav Mehta', loc: 'Mumbai', text: 'Staying at White Sea was a dream. Waking up to the mist flowing into the pine trees from the balcony was therapeutic. The hospitality felt like family.', image: 'assets/images/rooms/pine-suite-1.jpg' },
-    { name: 'Sarah Jenkins', loc: 'United Kingdom', text: 'Absolute luxury in the lap of nature. The room design was gorgeous, the home-cooked local thali was delicious, and the host’s secret guide was excellent.', image: 'assets/images/rooms/attic-1.jpg' },
-    { name: 'Rohit & Neha', loc: 'Delhi', text: 'Cozy fireplace, warm hospitality, and pure silence. The Misty Attic room is perfect for couples. We will definitely come back!', image: 'assets/images/rooms/cottage-1.jpg' }
+  // Guest Stories reviews
+  guestStories = [
+    {
+      name: 'Aarav Mehta',
+      loc: 'Mumbai, India',
+      highlight: 'Therapeutic Pine Forest Balcony',
+      text: 'Waking up to the mist flowing into the pine trees from the balcony of the Pine View Suite was therapeutic. Prakash prepared the most incredible fire-roasted thali, and shared stories of the hills. The cozy deck and hot teas made our stay unforgettable.',
+      image: 'assets/images/rooms/pine-suite-1.jpg',
+      memories: ['assets/images/rooms/pine-suite-2.jpg', 'assets/images/experiences/forest.jpg']
+    },
+    {
+      name: 'Sarah Jenkins',
+      loc: 'London, UK',
+      highlight: 'Sleeping Under the Mountain Sky',
+      text: 'Absolute luxury in the lap of nature. The Misty Attic room has skylights that let you fall asleep under the stars and wake up with mist rolling in. We spent hours drinking locally sourced tea and reading. Truly premium but feels like family.',
+      image: 'assets/images/rooms/attic-1.jpg',
+      memories: ['assets/images/rooms/attic-2.jpg', 'assets/images/experiences/tea-gardens.jpg']
+    },
+    {
+      name: 'Rohit & Neha',
+      loc: 'Delhi, India',
+      highlight: 'Forest Bonfire under the Stars',
+      text: 'Cozy fireplace, warm hospitality, and pure silence. The Forest Cottage is a secluded paradise. Prakash arranged a private stone fire-pit bonfire for us under the pine trees. Eating hot pakoras while the fire crackled in the cold mountain night was magical.',
+      image: 'assets/images/rooms/cottage-1.jpg',
+      memories: ['assets/images/experiences/train.jpg', 'assets/images/experiences/forest.jpg']
+    }
   ];
+  selectedStoryIndex = 0;
+
+  // Gallery Masonry Images
+  galleryImages = [
+    { url: 'assets/images/rooms/pine-suite-1.jpg', cat: 'property', title: 'Pine View Suite Balcony' },
+    { url: 'assets/images/rooms/attic-1.jpg', cat: 'property', title: 'Misty Attic Skylight' },
+    { url: 'assets/images/rooms/cottage-1.jpg', cat: 'property', title: 'Forest Canopy Cottage Exterior' },
+    { url: 'assets/images/experiences/forest.jpg', cat: 'nature', title: 'Dowhill Pine Canopy Walk' },
+    { url: 'assets/images/experiences/tea-gardens.jpg', cat: 'nature', title: 'Margaret\'s Hope Valley Estates' },
+    { url: 'assets/images/experiences/train.jpg', cat: 'nature', title: 'Darjeeling Himalayan Toy Train' },
+    { url: 'assets/images/rooms/pine-suite-2.jpg', cat: 'gastronomy', title: 'Warm Local Thali' },
+    { url: 'assets/images/rooms/attic-2.jpg', cat: 'gastronomy', title: 'Organic Mountain Teas' }
+  ];
+  galleryFilter = 'all';
+
+  // Room presentation V3 states
+  showComparison = false;
+  showFullscreenGallery = false;
+  activeFullscreenGalleryImages: string[] = [];
+  activeFullscreenGalleryIndex = 0;
+
+  // Mobile layout detection
+  isMobile = false;
 
   selectedRoomIndex = 1; // 0: Pine View, 1: Misty Attic, 2: Forest Cottage
   activeImageIndex = 0;
@@ -110,13 +197,44 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       this.threeService.isHomeJourneyActive = true;
       this.initializeDates();
+      this.checkDevice();
+    }
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.checkDevice();
+  }
+
+  checkDevice() {
+    if (isPlatformBrowser(this.platformId)) {
+      const wasMobile = this.isMobile;
+      this.isMobile = window.innerWidth < 768;
+      if (wasMobile !== this.isMobile) {
+        setTimeout(() => {
+          this.reinitAnimations();
+        }, 200);
+      }
+    }
+  }
+
+  reinitAnimations() {
+    if (this.masterScrollTimeline) {
+      this.masterScrollTimeline.scrollTrigger?.kill();
+      this.masterScrollTimeline.kill();
+      this.masterScrollTimeline = null;
+    }
+    if (!this.isMobile) {
+      this.initScrollAnimations();
     }
   }
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.ngZone.runOutsideAngular(() => {
-        this.initScrollAnimations();
+        if (!this.isMobile) {
+          this.initScrollAnimations();
+        }
         this.initLookAroundListeners();
         this.startProjectionLoop();
       });
@@ -237,14 +355,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.bookingService.specialRequests.set(this.guestForm.value.specialRequests);
       this.bookingStep = 3;
     }
-    this.scrollToScene(0.92);
+    this.scrollToScene(0.96);
   }
 
   prevBookingStep() {
     if (this.bookingStep > 1) {
       this.bookingStep--;
     }
-    this.scrollToScene(0.92);
+    this.scrollToScene(0.96);
   }
 
   triggerCheckout() {
@@ -268,7 +386,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           this.bookingResultId = res.booking?.id || 'WS-982741';
           this.isProcessingPayment = false;
           this.bookingStep = 5;
-          this.scrollToScene(0.92);
+          this.scrollToScene(0.96);
         }, 2500);
       },
       error: (err) => {
@@ -277,7 +395,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           this.bookingResultId = 'WS-SIM-' + Math.floor(100000 + Math.random() * 900000);
           this.isProcessingPayment = false;
           this.bookingStep = 5;
-          this.scrollToScene(0.92);
+          this.scrollToScene(0.96);
         }, 2500);
       }
     });
@@ -312,7 +430,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.rooms.length > 0) {
       this.bookingService.selectedRoom.set(this.rooms[0]);
     }
-    this.scrollToScene(0.92);
+    this.scrollToScene(0.96);
   }
 
   navigateToBooking() {
@@ -321,7 +439,41 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.bookingService.selectedRoom.set(selectedRoom);
     }
     this.bookingStep = 1;
-    this.scrollToScene(0.92);
+    this.scrollToScene(0.96);
+  }
+
+  // Room presentation action functions
+  toggleComparison(show: boolean) {
+    this.showComparison = show;
+  }
+
+  openFullscreenGallery(room: Room) {
+    this.activeFullscreenGalleryImages = room.images;
+    this.activeFullscreenGalleryIndex = 0;
+    this.showFullscreenGallery = true;
+  }
+
+  closeFullscreenGallery() {
+    this.showFullscreenGallery = false;
+  }
+
+  prevFullscreenImage() {
+    this.activeFullscreenGalleryIndex = (this.activeFullscreenGalleryIndex - 1 + this.activeFullscreenGalleryImages.length) % this.activeFullscreenGalleryImages.length;
+  }
+
+  nextFullscreenImage() {
+    this.activeFullscreenGalleryIndex = (this.activeFullscreenGalleryIndex + 1) % this.activeFullscreenGalleryImages.length;
+  }
+
+  // Gallery filters functions
+  setGalleryFilter(filter: string) {
+    this.galleryFilter = filter;
+  }
+
+  getFilteredImages() {
+    return this.galleryFilter === 'all' 
+      ? this.galleryImages 
+      : this.galleryImages.filter(img => img.cat === this.galleryFilter);
   }
 
   private initScrollAnimations() {
@@ -343,16 +495,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           this.threeService.updateEnvironment(self.progress);
           
           // Sync day/night theme body classes
-          if (self.progress >= 0.80 && self.progress <= 0.96) {
+          // Gallery (0.84-0.90), Location (0.90-0.94), Booking (0.94-0.98) are night scenes
+          if (self.progress >= 0.84 && self.progress <= 0.98) {
             this.themeService.setTheme('night');
-          } else {
-            this.themeService.setTheme('day');
-          }
-
-          // Sync Web Audio ambient sounds
-          if (self.progress >= 0.80 && self.progress <= 0.96) {
             this.audioService.updateSoundscape('night');
           } else {
+            this.themeService.setTheme('day');
             this.audioService.updateSoundscape('day');
           }
         }
@@ -363,99 +511,116 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     // Scrub timeline duration scale = 10
     this.masterScrollTimeline.duration(10);
 
-    // 1. Camera track interpolation
+    // 1. Camera track interpolation mapping new content hierarchy
     this.masterScrollTimeline
-      // Scene 1 -> 2
+      // Scene 1 -> 2 (0.0 to 1.5)
       .to(this.threeService.cameraBasePosition, { x: -35, y: 45, z: 80, ease: 'sine.inOut' }, 0)
       .to(this.threeService.cameraBaseTarget, { x: 0, y: 20, z: -10, ease: 'sine.inOut' }, 0)
       
-      // Scene 2 -> 3
+      // Scene 2 -> 3 (1.5 to 3.5)
       .to(this.threeService.cameraBasePosition, { x: 25, y: 18, z: 35, ease: 'sine.inOut' }, 1.5)
       .to(this.threeService.cameraBaseTarget, { x: 0, y: 6, z: 0, ease: 'sine.inOut' }, 1.5)
 
-      // Scene 3 -> 4
-      .to(this.threeService.cameraBasePosition, { x: 8, y: 7.5, z: 18, ease: 'sine.inOut' }, 3.5)
-      .to(this.threeService.cameraBaseTarget, { x: 0, y: 6.5, z: 0, ease: 'sine.inOut' }, 3.5)
+      // Scene 3 -> 4 (Rooms window zoom) (3.5 to 4.5)
+      .to(this.threeService.cameraBasePosition, { x: 0, y: 8.5, z: 12, ease: 'power2.in' }, 3.5)
+      .to(this.threeService.cameraBaseTarget, { x: 0, y: 8.5, z: 0, ease: 'power2.in' }, 3.5)
+      .to(this.threeService.cameraBasePosition, { x: 0, y: 8.5, z: 5, ease: 'power2.out' }, 4.1)
+      .to(this.threeService.cameraBaseTarget, { x: 0, y: 8.5, z: -5, ease: 'power2.out' }, 4.1)
 
-      // Scene 4 -> 5 (Zoom in window)
-      .to(this.threeService.cameraBasePosition, { x: 0, y: 8.5, z: 12, ease: 'power2.in' }, 4.8)
-      .to(this.threeService.cameraBaseTarget, { x: 0, y: 8.5, z: 0, ease: 'power2.in' }, 4.8)
-      .to(this.threeService.cameraBasePosition, { x: 0, y: 8.5, z: 5, ease: 'power2.out' }, 5.2)
-      .to(this.threeService.cameraBaseTarget, { x: 0, y: 8.5, z: -5, ease: 'power2.out' }, 5.2)
+      // Scene 4 -> 5 (Reviews forest overview) (4.5 to 5.8)
+      .to(this.threeService.cameraBasePosition, { x: 35, y: 22, z: 60, ease: 'sine.inOut' }, 4.8)
+      .to(this.threeService.cameraBaseTarget, { x: 0, y: 12, z: 0, ease: 'sine.inOut' }, 4.8)
 
-      // Scene 5 -> 6 (Exits back to forest)
-      .to(this.threeService.cameraBasePosition, { x: -20, y: 15, z: 40, ease: 'sine.inOut' }, 6.5)
-      .to(this.threeService.cameraBaseTarget, { x: 0, y: 10, z: 0, ease: 'sine.inOut' }, 6.5)
+      // Scene 5 -> 6 (Experiences side trail) (5.8 to 6.8)
+      .to(this.threeService.cameraBasePosition, { x: -20, y: 15, z: 40, ease: 'sine.inOut' }, 5.8)
+      .to(this.threeService.cameraBaseTarget, { x: 0, y: 10, z: 0, ease: 'sine.inOut' }, 5.8)
 
-      // Scene 6 -> 7 (Reviews overview)
-      .to(this.threeService.cameraBasePosition, { x: 35, y: 22, z: 60, ease: 'sine.inOut' }, 7.5)
-      .to(this.threeService.cameraBaseTarget, { x: 0, y: 12, z: 0, ease: 'sine.inOut' }, 7.5)
+      // Scene 6 -> 7 (Host Story facade close-up) (6.8 to 7.8)
+      .to(this.threeService.cameraBasePosition, { x: 8, y: 7.5, z: 18, ease: 'sine.inOut' }, 6.8)
+      .to(this.threeService.cameraBaseTarget, { x: 0, y: 6.5, z: 0, ease: 'sine.inOut' }, 6.8)
 
-      // Scene 7 -> 8 (Dusk to Night deck view)
+      // Scene 7 -> 8 (Gallery high angle valley view) (7.8 to 8.4)
+      .to(this.threeService.cameraBasePosition, { x: -15, y: 30, z: 75, ease: 'sine.inOut' }, 7.8)
+      .to(this.threeService.cameraBaseTarget, { x: 0, y: 15, z: 0, ease: 'sine.inOut' }, 7.8)
+
+      // Scene 8 -> 9 (Location deck approach) (8.4 to 9.0)
       .to(this.threeService.cameraBasePosition, { x: 12, y: 8, z: 20, ease: 'sine.inOut' }, 8.4)
       .to(this.threeService.cameraBaseTarget, { x: 0, y: 6.5, z: 0, ease: 'sine.inOut' }, 8.4)
 
-      // Scene 8 -> 9 (Booking view)
+      // Scene 9 -> 10 (Booking view) (9.0 to 9.6)
       .to(this.threeService.cameraBasePosition, { x: 6, y: 6.8, z: 14, ease: 'sine.inOut' }, 9.0)
       .to(this.threeService.cameraBaseTarget, { x: 0, y: 6.5, z: 0, ease: 'sine.inOut' }, 9.0)
 
-      // Scene 9 -> 10 (Final rise to sunrise)
+      // Scene 10 -> 11 (Final rise to sunrise) (9.6 to 10.0)
       .to(this.threeService.cameraBasePosition, { x: 0, y: 60, z: 120, ease: 'sine.inOut' }, 9.6)
       .to(this.threeService.cameraBaseTarget, { x: 0, y: 12, z: 0, ease: 'sine.inOut' }, 9.6);
 
-    // 2. HTML Layers Transitions
+    // 2. HTML Layers Transitions (optimized to prevent overlaps)
     this.masterScrollTimeline
       .set('#scene1', { opacity: 1, pointerEvents: 'auto' }, 0)
-      .set(['#scene2', '#scene3', '#scene4', '#scene5', '#scene6', '#scene7', '#scene8', '#scene9', '#scene10'], { opacity: 0, pointerEvents: 'none' }, 0)
+      .set(['#scene2', '#scene3', '#scene4', '#scene5', '#scene6', '#scene7', '#scene8', '#scene9', '#scene10', '#scene11'], { opacity: 0, pointerEvents: 'none' }, 0)
 
-      .to('#scene1', { opacity: 0, duration: 0.8 }, 0.8)
+      .fromTo('#scene1', { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.8)
+      .set('#scene1', { pointerEvents: 'none' }, 1.0)
       
-      .to('#scene2', { opacity: 1, duration: 0.6 }, 1.0)
-      .set('#scene2', { pointerEvents: 'auto' }, 1.0)
-      .to('#scene2', { opacity: 0, duration: 0.6 }, 2.0)
-      .set('#scene2', { pointerEvents: 'none' }, 2.6)
+      .fromTo('#scene2', { opacity: 0 }, { opacity: 1, duration: 0.4 }, 1.0)
+      .set('#scene2', { pointerEvents: 'auto' }, 1.4)
+      .fromTo('#scene2', { opacity: 1 }, { opacity: 0, duration: 0.4 }, 3.1)
+      .set('#scene2', { pointerEvents: 'none' }, 3.5)
 
-      .to('#scene3', { opacity: 1, duration: 0.6 }, 2.4)
-      .set('#scene3', { pointerEvents: 'auto' }, 2.4)
-      .to('#scene3', { opacity: 0, duration: 0.6 }, 3.4)
-      .set('#scene3', { pointerEvents: 'none' }, 3.9)
+      .fromTo('#scene3', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.5)
+      .set('#scene3', { pointerEvents: 'auto' }, 3.8)
+      .fromTo('#scene3', { opacity: 1 }, { opacity: 0, duration: 0.3 }, 4.2)
+      .set('#scene3', { pointerEvents: 'none' }, 4.5)
 
-      .to('#scene4', { opacity: 1, duration: 0.6 }, 3.7)
-      .set('#scene4', { pointerEvents: 'auto' }, 3.7)
-      .to('#scene4', { opacity: 0, duration: 0.6 }, 4.7)
-      .set('#scene4', { pointerEvents: 'none' }, 5.2)
+      // Rooms Explore (Scene 4)
+      .fromTo('#scene4', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.5)
+      .set('#scene4', { pointerEvents: 'auto' }, 4.8)
+      .call(() => this.toggleCabinVisibility(true), [], 4.5)
+      .call(() => this.toggleCabinVisibility(false), [], 4.49)
+      .fromTo('#scene4', { opacity: 1 }, { opacity: 0, duration: 0.3 }, 5.5)
+      .set('#scene4', { pointerEvents: 'none' }, 5.8)
+      .call(() => this.toggleCabinVisibility(false), [], 5.8)
 
-      .to('#scene5', { opacity: 1, duration: 0.6 }, 5.0)
-      .set('#scene5', { pointerEvents: 'auto' }, 5.0)
-      .call(() => this.toggleCabinVisibility(true), [], 5.0)
-      .call(() => this.toggleCabinVisibility(false), [], 4.99)
-      
-      .to('#scene5', { opacity: 0, duration: 0.6 }, 6.2)
-      .set('#scene5', { pointerEvents: 'none' }, 6.7)
-      .call(() => this.toggleCabinVisibility(false), [], 6.5)
+      // Reviews (Scene 5)
+      .fromTo('#scene5', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 5.8)
+      .set('#scene5', { pointerEvents: 'auto' }, 6.1)
+      .fromTo('#scene5', { opacity: 1 }, { opacity: 0, duration: 0.3 }, 6.5)
+      .set('#scene5', { pointerEvents: 'none' }, 6.8)
 
-      .to('#scene6', { opacity: 1, duration: 0.6 }, 6.5)
-      .set('#scene6', { pointerEvents: 'auto' }, 6.5)
-      .to('#scene6', { opacity: 0, duration: 0.6 }, 7.2)
-      .set('#scene6', { pointerEvents: 'none' }, 7.7)
+      // Experiences (Scene 6)
+      .fromTo('#scene6', { opacity: 0 }, { opacity: 1, duration: 0.2 }, 6.8)
+      .set('#scene6', { pointerEvents: 'auto' }, 7.0)
+      .fromTo('#scene6', { opacity: 1 }, { opacity: 0, duration: 0.3 }, 7.5)
+      .set('#scene6', { pointerEvents: 'none' }, 7.8)
 
-      .to('#scene7', { opacity: 1, duration: 0.6 }, 7.5)
-      .set('#scene7', { pointerEvents: 'auto' }, 7.5)
-      .to('#scene7', { opacity: 0, duration: 0.6 }, 8.2)
-      .set('#scene7', { pointerEvents: 'none' }, 8.7)
+      // Host Story (Scene 7)
+      .fromTo('#scene7', { opacity: 0 }, { opacity: 1, duration: 0.2 }, 7.8)
+      .set('#scene7', { pointerEvents: 'auto' }, 8.0)
+      .fromTo('#scene7', { opacity: 1 }, { opacity: 0, duration: 0.2 }, 8.2)
+      .set('#scene7', { pointerEvents: 'none' }, 8.4)
 
-      .to('#scene8', { opacity: 1, duration: 0.6 }, 8.4)
-      .set('#scene8', { pointerEvents: 'auto' }, 8.4)
-      .to('#scene8', { opacity: 0, duration: 0.6 }, 9.0)
-      .set('#scene8', { pointerEvents: 'none' }, 9.4)
+      // Gallery Masonry (Scene 8)
+      .fromTo('#scene8', { opacity: 0 }, { opacity: 1, duration: 0.2 }, 8.4)
+      .set('#scene8', { pointerEvents: 'auto' }, 8.6)
+      .fromTo('#scene8', { opacity: 1 }, { opacity: 0, duration: 0.2 }, 8.8)
+      .set('#scene8', { pointerEvents: 'none' }, 9.0)
 
-      .to('#scene9', { opacity: 1, duration: 0.6 }, 9.0)
-      .set('#scene9', { pointerEvents: 'auto' }, 9.0)
-      .to('#scene9', { opacity: 0, duration: 0.6 }, 9.6)
-      .set('#scene9', { pointerEvents: 'none' }, 9.8)
+      // Location Map (Scene 9)
+      .fromTo('#scene9', { opacity: 0 }, { opacity: 1, duration: 0.2 }, 9.0)
+      .set('#scene9', { pointerEvents: 'auto' }, 9.2)
+      .fromTo('#scene9', { opacity: 1 }, { opacity: 0, duration: 0.1 }, 9.3) // Fades out completely by 9.4
+      .set('#scene9', { pointerEvents: 'none' }, 9.4)
 
-      .to('#scene10', { opacity: 1, duration: 0.6 }, 9.7)
-      .set('#scene10', { pointerEvents: 'auto' }, 9.7);
+      // Booking (Scene 10)
+      .fromTo('#scene10', { opacity: 0 }, { opacity: 1, duration: 0.1 }, 9.4) // Fades in completely by 9.5
+      .set('#scene10', { pointerEvents: 'auto' }, 9.5)
+      .fromTo('#scene10', { opacity: 1 }, { opacity: 0, duration: 0.1 }, 9.7)
+      .set('#scene10', { pointerEvents: 'none' }, 9.8)
+
+      // Final Sunrise (Scene 11)
+      .fromTo('#scene11', { opacity: 0 }, { opacity: 1, duration: 0.1 }, 9.8)
+      .set('#scene11', { pointerEvents: 'auto' }, 9.9);
   }
 
   private toggleCabinVisibility(showInterior: boolean) {
@@ -467,9 +632,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private initLookAroundListeners() {
     const handleDown = (clientX: number, clientY: number) => {
+      if (this.isMobile) return;
       const progress = this.masterScrollTrigger?.progress || 0;
-      // Allow drag rotation look-around only in Scene 5 (progress 0.48 - 0.67) & no active hotspot
-      if (progress < 0.48 || progress > 0.67 || this.activeHotspotObj) return;
+      // Allow drag rotation look-around only in Scene 4 Rooms (progress 0.45 - 0.58) & no active hotspot
+      if (progress < 0.45 || progress > 0.58 || this.activeHotspotObj) return;
 
       this.isDragging = true;
       this.previousMouse.x = clientX;
@@ -477,7 +643,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     const handleMove = (clientX: number, clientY: number) => {
-      if (!this.isDragging) return;
+      if (!this.isDragging || this.isMobile) return;
 
       const deltaX = clientX - this.previousMouse.x;
       const deltaY = clientY - this.previousMouse.y;
@@ -612,9 +778,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    // Project coordinates only when in room exploration phase (Scene 5 overlay is active)
+    // Project coordinates only when in room exploration phase (Scene 4 overlay is active, progress 0.45 - 0.58)
     const progress = this.masterScrollTrigger?.progress || 0;
-    if (progress < 0.47 || progress > 0.68) {
+    if (this.isMobile || progress < 0.44 || progress > 0.59) {
       this.projectedHotspots = [];
       return;
     }
@@ -720,6 +886,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   scrollToScene(progress: number) {
+    this.gsapService.refresh();
     const track = document.querySelector('.scroll-track');
     if (!track) return;
     const scrollHeight = track.clientHeight - window.innerHeight;

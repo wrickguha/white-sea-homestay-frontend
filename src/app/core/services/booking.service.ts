@@ -1,6 +1,6 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of, map } from 'rxjs';
 
 export interface Room {
   id: string;
@@ -13,6 +13,8 @@ export interface Room {
   images: string[];
   viewType: string;
   totalRooms: number;
+  size: string;
+  bedType: string;
 }
 
 export interface BookingDetails {
@@ -82,16 +84,36 @@ export class BookingService {
 
   constructor(private http: HttpClient) {}
 
+  private enrichRoom(room: Room): Room {
+    const enriched = { ...room };
+    if (!enriched.size) {
+      if (enriched.slug?.includes('suite')) enriched.size = '450 sq ft';
+      else if (enriched.slug?.includes('attic')) enriched.size = '380 sq ft';
+      else enriched.size = '850 sq ft';
+    }
+    if (!enriched.bedType) {
+      if (enriched.slug?.includes('suite')) enriched.bedType = 'King-size Luxury Bed';
+      else if (enriched.slug?.includes('attic')) enriched.bedType = 'Queen-size Plush Bed';
+      else enriched.bedType = 'Two Luxury Master Beds';
+    }
+    return enriched;
+  }
+
   /**
    * Fetches all room categories from the backend.
    */
   getRooms(): Observable<Room[]> {
     return this.http.get<Room[]>(`${this.apiUrl}/rooms`).pipe(
+      map(rooms => rooms.map(r => this.enrichRoom(r))),
       catchError(err => {
         console.error('Error fetching rooms, returning mock fallback:', err);
-        return of(this.getMockRooms());
+        return of(this.enrichRoomsList(this.getMockRooms()));
       })
     );
+  }
+
+  private enrichRoomsList(rooms: Room[]): Room[] {
+    return rooms.map(r => this.enrichRoom(r));
   }
 
   /**
@@ -99,10 +121,11 @@ export class BookingService {
    */
   getRoomBySlug(slug: string): Observable<Room> {
     return this.http.get<Room>(`${this.apiUrl}/rooms/${slug}`).pipe(
+      map(room => this.enrichRoom(room)),
       catchError(err => {
         console.error(`Error fetching room slug: ${slug}, returning mock:`, err);
         const match = this.getMockRooms().find(r => r.slug === slug);
-        return match ? of(match) : of(this.getMockRooms()[0]);
+        return match ? of(this.enrichRoom(match)) : of(this.enrichRoom(this.getMockRooms()[0]));
       })
     );
   }
@@ -167,7 +190,9 @@ export class BookingService {
           'assets/images/rooms/pine-suite-2.jpg'
         ],
         viewType: 'Pine Forest & Valley View',
-        totalRooms: 2
+        totalRooms: 2,
+        size: '450 sq ft',
+        bedType: 'King-size Luxury Bed'
       },
       {
         id: 'misty-attic-room-id',
@@ -190,7 +215,9 @@ export class BookingService {
           'assets/images/rooms/attic-2.jpg'
         ],
         viewType: 'Himalayan Peak & Skylight View',
-        totalRooms: 1
+        totalRooms: 1,
+        size: '380 sq ft',
+        bedType: 'Queen-size Plush Bed'
       },
       {
         id: 'forest-canopy-cottage-id',
@@ -213,7 +240,9 @@ export class BookingService {
           'assets/images/rooms/cottage-2.jpg'
         ],
         viewType: 'Deep Pine Forest View',
-        totalRooms: 1
+        totalRooms: 1,
+        size: '850 sq ft',
+        bedType: 'Two Luxury Master Beds'
       }
     ];
   }
