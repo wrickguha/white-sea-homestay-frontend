@@ -9,7 +9,7 @@ import { ThemeService } from '../../../core/services/theme.service';
   template: `
     <button 
       (click)="themeService.toggleTheme()"
-      class="fixed top-6 right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full glass-panel border border-gold-400/30 text-gold-400 hover:text-gold-300 shadow-md hover:scale-105 active:scale-95 transition-all duration-500 overflow-hidden"
+      class="fixed top-20 right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full glass-panel border border-gold-400/30 text-gold-400 hover:text-gold-300 shadow-md hover:scale-105 active:scale-95 transition-all duration-500 overflow-hidden"
       [title]="themeService.theme() === 'day' ? 'Switch to Night Mode' : 'Switch to Day Mode'"
     >
       <div class="relative w-6 h-6 flex items-center justify-center">

@@ -65,51 +65,53 @@ export class LoaderComponent implements OnInit {
   }
 
   private runFakeLoader() {
-    // Smooth progress calculation
+    // Smooth progress calculation (faster intervals and steps)
     const interval = setInterval(() => {
       if (this.progress < 100) {
-        this.progress += Math.floor(Math.random() * 8) + 4;
+        this.progress += Math.floor(Math.random() * 15) + 15;
         if (this.progress > 100) this.progress = 100;
       } else {
         clearInterval(interval);
         this.playExitSequence();
       }
-    }, 120);
+    }, 30);
 
     // Initial load sequence
     setTimeout(() => {
       this.playIntroSequence();
-    }, 100);
+    }, 20);
   }
 
   private playIntroSequence() {
     const tl = gsap.timeline();
-    tl.to(this.logoIcon.nativeElement, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' })
-      .to(this.title.nativeElement, { opacity: 1, duration: 1.0, ease: 'power2.out' }, '-=0.8')
-      .to(this.divider.nativeElement, { width: 80, duration: 0.8, ease: 'power2.inOut' }, '-=0.6')
-      .to(this.subtitle.nativeElement, { opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.4')
-      .to(this.progressWrapper.nativeElement, { opacity: 1, duration: 0.5 }, '-=0.2');
+    tl.to(this.logoIcon.nativeElement, { opacity: 1, y: 0, duration: 0.25, ease: 'power3.out' })
+      .to(this.title.nativeElement, { opacity: 1, duration: 0.2, ease: 'power2.out' }, '-=0.2')
+      .to(this.divider.nativeElement, { width: 80, duration: 0.15, ease: 'power2.inOut' }, '-=0.15')
+      .to(this.subtitle.nativeElement, { opacity: 1, duration: 0.15, ease: 'power2.out' }, '-=0.1')
+      .to(this.progressWrapper.nativeElement, { opacity: 1, duration: 0.1 }, '-=0.05');
   }
 
   private playExitSequence() {
+    // Emit loaded event immediately so the main page content fades in concurrently
+    this.loaded.emit();
+
     const tl = gsap.timeline({
       onComplete: () => {
         this.isVisible = false;
-        this.loaded.emit();
       }
     });
 
     tl.to([this.logoIcon.nativeElement, this.title.nativeElement, this.divider.nativeElement, this.subtitle.nativeElement, this.progressWrapper.nativeElement], {
       opacity: 0,
-      y: -20,
-      stagger: 0.1,
-      duration: 0.8,
+      y: -15,
+      stagger: 0.02,
+      duration: 0.2,
       ease: 'power3.in'
     })
     .to(this.loaderContainer.nativeElement, {
       yPercent: -100,
-      duration: 1.0,
-      ease: 'power4.inOut'
-    });
+      duration: 0.45,
+      ease: 'power3.inOut'
+    }, '-=0.10');
   }
 }

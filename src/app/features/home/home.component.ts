@@ -181,8 +181,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.bookingService.getRooms().subscribe(data => {
       this.rooms = data;
       if (data.length > 0) {
+        if (this.selectedRoomIndex >= data.length) {
+          this.selectedRoomIndex = 0;
+        }
         if (!this.bookingService.selectedRoom()) {
-          this.bookingService.selectedRoom.set(data[0]);
+          this.bookingService.selectedRoom.set(data[this.selectedRoomIndex]);
         }
       }
     });
@@ -220,10 +223,18 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   reinitAnimations() {
     if (this.masterScrollTimeline) {
-      this.masterScrollTimeline.scrollTrigger?.kill();
+      this.masterScrollTimeline.revert();
       this.masterScrollTimeline.kill();
       this.masterScrollTimeline = null;
     }
+    
+    // Clear residual inline styling properties applied by GSAP
+    const gsap = this.gsapService.gsapInstance;
+    gsap.set(
+      ['#scene1', '#scene2', '#scene3', '#scene4', '#scene5', '#scene6', '#scene7', '#scene8', '#scene9', '#scene10', '#scene11'],
+      { clearProps: 'opacity,pointer-events,transform' }
+    );
+
     if (!this.isMobile) {
       this.initScrollAnimations();
     }
@@ -903,9 +914,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         cancelAnimationFrame(this.projectionFrameId);
       }
 
-      // Destroy ScrollTrigger instance
+      // Destroy ScrollTrigger instance and revert styling states
       if (this.masterScrollTimeline) {
-        this.masterScrollTimeline.scrollTrigger?.kill();
+        this.masterScrollTimeline.revert();
         this.masterScrollTimeline.kill();
       }
 
