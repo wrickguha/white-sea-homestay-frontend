@@ -1,0 +1,165 @@
+<section class="min-h-screen py-16 px-6 md:px-16 relative z-30 max-w-7xl mx-auto flex flex-col justify-start">
+  
+  <!-- Page Header -->
+  <div class="text-center max-w-2xl mx-auto mb-12">
+    <span class="text-xs uppercase tracking-[0.35em] text-gold-500 font-bold mb-3 block">Personalized Guide</span>
+    <h1 class="text-3xl md:text-5xl font-serif font-medium text-forest-950 dark:text-cream-100">AI Concierge & Planner</h1>
+    <div class="w-16 h-[1px] bg-gold-400/50 mx-auto mt-4"></div>
+  </div>
+
+  <!-- Main Grid Layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch flex-grow">
+    
+    <!-- LEFT COLUMN: TRIP BUILDER -->
+    <div class="lg:col-span-6 flex flex-col gap-6">
+      <div class="glass-panel p-8 rounded-3xl shadow-xl flex flex-col gap-6">
+        <h2 class="text-xl font-serif font-medium text-forest-950 dark:text-cream-100">Plan Your Itinerary</h2>
+        <div class="w-full h-[1px] bg-forest-950/10 dark:bg-white/5"></div>
+
+        <!-- Inputs Form -->
+        <div class="flex flex-col gap-5">
+          <!-- Days Slider -->
+          <div class="flex flex-col gap-2">
+            <div class="flex justify-between items-baseline">
+              <label class="text-[10px] uppercase tracking-widest text-forest-800 dark:text-cream-300/60 font-semibold">Length of Stay</label>
+              <span class="text-xs font-semibold text-gold-400 font-serif">{{ days }} Day{{ days > 1 ? 's' : '' }}</span>
+            </div>
+            <input 
+              type="range" 
+              min="1" 
+              max="7" 
+              [(ngModel)]="days" 
+              (ngModelChange)="generateItinerary()"
+              class="w-full h-1 bg-forest-950/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-gold-500"
+            >
+          </div>
+
+          <!-- Interest Options -->
+          <div class="flex flex-col gap-2">
+            <label class="text-[10px] uppercase tracking-widest text-forest-800 dark:text-cream-300/60 font-semibold">Primary Focus</label>
+            <div class="grid grid-cols-2 gap-3">
+              <button 
+                *ngFor="let item of [['nature', 'Nature Trails'], ['trekking', 'Trekking'], ['relaxation', 'Cozy Relaxing'], ['food', 'Local Food']]"
+                (click)="interest = item[0]; generateItinerary()"
+                [ngClass]="interest === item[0] ? 'border-gold-400 text-gold-400 bg-gold-400/5' : 'border-forest-950/10 dark:border-white/10 text-forest-800 dark:text-cream-200'"
+                class="py-2.5 rounded-xl border text-[10px] uppercase tracking-widest font-semibold transition-all duration-300"
+              >
+                {{ item[1] }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generated Day-by-Day Guide List -->
+      <div class="glass-panel p-8 rounded-3xl shadow-xl flex-grow flex flex-col gap-6">
+        <h3 class="text-lg font-serif font-medium text-forest-950 dark:text-cream-100 flex items-center gap-2">
+          <svg class="w-4 h-4 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+          Your Day-by-Day Itinerary
+        </h3>
+        
+        <div class="flex flex-col gap-6 text-xs font-light text-forest-800 dark:text-cream-200/80 leading-relaxed">
+          <div *ngFor="let item of generatedItinerary" class="flex gap-4 items-start border-l border-gold-400/20 pl-4 py-1">
+            <p>{{ item }}</p>
+          </div>
+        </div>
+        
+        <button 
+          routerLink="/"
+          [fragment]="'booking'"
+          class="w-full py-3.5 rounded-xl bg-forest-950 text-cream-100 dark:bg-gold-500 hover:bg-gold-500 dark:hover:bg-cream-100 dark:hover:text-forest-950 text-[10px] uppercase tracking-widest font-semibold transition-all duration-300 shadow-md"
+        >
+          Book this Custom Trip
+        </button>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: CHAT WINDOW -->
+    <div class="lg:col-span-6 glass-panel rounded-3xl shadow-xl overflow-hidden flex flex-col h-[550px] lg:h-auto">
+      
+      <!-- Chat Header -->
+      <div class="bg-forest-900/10 dark:bg-forest-950/40 px-6 py-4 flex items-center gap-4 border-b border-forest-950/15 dark:border-white/5">
+        <div class="relative">
+          <div class="w-10 h-10 rounded-full overflow-hidden border border-gold-400/30">
+            <img src="assets/images/host.jpg" alt="Prakash" class="w-full h-full object-cover">
+          </div>
+          <!-- Online green dot status -->
+          <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-green-500 border border-forest-950"></span>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-forest-950 dark:text-cream-100">Prakash</h3>
+          <span class="text-[9px] uppercase tracking-wider text-forest-700/60 dark:text-cream-300/40 block">Host & AI Concierge</span>
+        </div>
+      </div>
+
+      <!-- Chat History Box -->
+      <div 
+        #chatScrollContainer
+        class="flex-grow p-6 overflow-y-auto flex flex-col gap-4 text-xs"
+      >
+        <div 
+          *ngFor="let msg of chatHistory" 
+          [ngClass]="msg.sender === 'user' ? 'self-end flex-row-reverse' : 'self-start'"
+          class="flex items-start gap-3 w-full"
+        >
+          <!-- Avatar inside chat -->
+          <div 
+            *ngIf="msg.sender === 'concierge'" 
+            class="w-7 h-7 rounded-full overflow-hidden border border-gold-400/20 flex-shrink-0"
+          >
+            <img src="assets/images/host.jpg" alt="AI Host" class="w-full h-full object-cover">
+          </div>
+
+          <!-- Text Bubble -->
+          <div 
+            [ngClass]="msg.sender === 'user' ? 'bg-gold-500 text-cream-100 rounded-2xl rounded-tr-none' : 'glass-panel text-forest-900 dark:text-cream-100 border border-forest-950/10 dark:border-white/5 rounded-2xl rounded-tl-none'"
+            class="chat-bubble p-4 leading-relaxed font-light shadow-md"
+          >
+            <p>{{ msg.text }}</p>
+            <span 
+              [ngClass]="msg.sender === 'user' ? 'text-cream-200/50' : 'text-forest-700/40 dark:text-cream-300/30'"
+              class="text-[8px] block text-right mt-1.5"
+            >
+              {{ msg.timestamp | date:'shortTime' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Typing Indicator animation -->
+        <div *ngIf="isTyping" class="self-start flex items-center gap-3">
+          <div class="w-7 h-7 rounded-full overflow-hidden border border-gold-400/20 flex-shrink-0">
+            <img src="assets/images/host.jpg" alt="AI Host" class="w-full h-full object-cover">
+          </div>
+          <div class="glass-panel px-4 py-3 rounded-2xl rounded-tl-none flex items-center gap-1 shadow-md border border-forest-950/10 dark:border-white/5">
+            <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-bounce" style="animation-delay: 0s"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-bounce" style="animation-delay: 0.15s"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-bounce" style="animation-delay: 0.3s"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Input controls -->
+      <div class="p-4 border-t border-forest-950/15 dark:border-white/5 bg-forest-900/5 dark:bg-forest-950/25">
+        <form (submit)="sendMessage(); $event.preventDefault()" class="flex gap-3">
+          <input 
+            type="text" 
+            [(ngModel)]="userInput"
+            name="chatInput"
+            placeholder="Ask about weather, thali food, Wi-Fi speeds, or room rates..."
+            class="flex-grow px-4 py-3 rounded-xl border border-forest-950/15 dark:border-white/10 bg-transparent text-xs focus:outline-none focus:border-gold-400 dark:text-white"
+            [disabled]="isTyping"
+          >
+          <button 
+            type="submit"
+            [disabled]="isTyping || !userInput.trim()"
+            [ngClass]="isTyping || !userInput.trim() ? 'opacity-50 cursor-not-allowed' : ''"
+            class="w-10 h-10 rounded-xl bg-forest-950 text-cream-100 dark:bg-gold-500 hover:bg-gold-500 dark:hover:bg-cream-100 dark:hover:text-forest-950 flex items-center justify-center transition-all duration-300"
+          >
+            <!-- Send Icon -->
+            <svg class="w-4 h-4 transform rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

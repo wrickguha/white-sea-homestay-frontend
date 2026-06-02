@@ -1,0 +1,782 @@
+<!-- Scroll Track that provides the height for Lenis / ScrollTrigger -->
+<div class="scroll-track relative w-full h-[1000vh]">
+  
+  <!-- Invisible Navigation Target Anchors -->
+  <div id="about" class="absolute top-[38%] left-0 w-full h-1 pointer-events-none"></div>
+  <div id="rooms" class="absolute top-[50%] left-0 w-full h-1 pointer-events-none"></div>
+  <div id="attractions" class="absolute top-[65%] left-0 w-full h-1 pointer-events-none"></div>
+  <div id="booking" class="absolute top-[90%] left-0 w-full h-1 pointer-events-none"></div>
+
+  <!-- FIXED VIEWPORT VIEW CONTAINING ALL INTERACTIVE LAYERS -->
+  <div class="fixed inset-0 w-full h-screen overflow-hidden pointer-events-none z-10 flex flex-col justify-between">
+    
+    <!-- ---------------------------------------------------- -->
+    <!-- SCENE 1: THE ARRIVAL (0.0 - 1.2)                     -->
+    <!-- ---------------------------------------------------- -->
+    <div id="scene1" class="scene-overlay absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center px-6 z-20">
+      <div class="max-w-4xl flex flex-col items-center gap-6">
+        <!-- Minimal abstract crest logo -->
+        <div class="w-16 h-16 text-gold-500 animate-pulse-subtle">
+          <svg viewBox="0 0 100 100" fill="none" class="w-full h-full">
+            <path d="M50 15L20 75H80L50 15Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M50 45L35 75H65L50 45Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        
+        <h1 class="text-4xl md:text-7xl font-serif font-bold text-forest-950 dark:text-cream-100 tracking-widest uppercase leading-none">
+          White Sea
+        </h1>
+        <div class="w-24 h-[1px] bg-gold-400"></div>
+        <p class="text-sm md:text-lg text-forest-900/80 dark:text-cream-100/80 font-light tracking-[0.3em] uppercase">
+          Beyond the Clouds Lies a Hidden Escape
+        </p>
+
+        <!-- Dynamic mouse drag hint -->
+        <p class="text-[9px] uppercase tracking-[0.2em] text-gold-500 font-medium mt-4">
+          Move your mouse to shift the mist
+        </p>
+      </div>
+
+      <!-- Scroll cue -->
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-80">
+        <span class="text-[9px] uppercase tracking-[0.3em] text-forest-900 dark:text-cream-200">Scroll to Begin Journey</span>
+        <div class="w-[1px] h-10 bg-gradient-to-b from-gold-400 to-transparent animate-bounce"></div>
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- SCENE 2: FLY THROUGH DOWHILL (1.0 - 2.6)             -->
+    <!-- ---------------------------------------------------- -->
+    <div id="scene2" class="scene-overlay absolute inset-0 w-full h-full flex items-start justify-between p-6 md:p-12 z-20">
+      <div class="flex flex-col gap-1 text-left font-mono text-[9px] md:text-xs text-forest-800/60 dark:text-cream-200/40">
+        <span>LOC: DOWHILL, KURSEONG</span>
+        <span>ALTITUDE: 4,860 FT</span>
+        <span>COORDS: 26.9016° N, 88.2778° E</span>
+      </div>
+      <div class="max-w-md text-right flex flex-col items-end gap-3">
+        <span class="text-[10px] uppercase tracking-[0.4em] text-gold-500 font-semibold">The Himalayan Foothills</span>
+        <h2 class="text-2xl font-serif text-forest-950 dark:text-cream-100 leading-tight">
+          Flying Through Forest Ridges
+        </h2>
+        <p class="text-xs font-light text-forest-800/80 dark:text-cream-200/60 leading-relaxed">
+          Drift across rolling clouds and towering ancient pine groves as you descend into the serenity of our mountain estate.
+        </p>
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- SCENE 3: THE DISCOVERY (2.4 - 3.9)                   -->
+    <!-- ---------------------------------------------------- -->
+    <div id="scene3" class="scene-overlay absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center px-6 z-20">
+      <div class="max-w-2xl flex flex-col items-center gap-4">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-500 font-bold">The Retreat Emerges</span>
+        <h2 class="text-3xl md:text-6xl font-serif font-medium text-forest-950 dark:text-cream-100 leading-none">
+          Welcome Home
+        </h2>
+        <p class="text-sm font-light text-forest-800/80 dark:text-cream-200/70 leading-relaxed max-w-lg">
+          A glowing sanctuary appears amidst the mist. A place built not to escape life, but for life not to escape you.
+        </p>
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- SCENE 4: MEET THE HOST (3.7 - 5.2)                   -->
+    <!-- ---------------------------------------------------- -->
+    <div id="scene4" class="scene-overlay absolute inset-0 w-full h-full flex items-center justify-center p-6 md:p-16 z-20">
+      <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-8 p-6 md:p-8 rounded-3xl glass-panel border border-forest-950/10 dark:border-white/5 shadow-2xl pointer-events-auto items-center">
+        <!-- Host Image Section -->
+        <div class="md:col-span-5 h-[200px] md:h-[350px] w-full rounded-2xl overflow-hidden shadow-lg border border-forest-950/5 dark:border-white/5 relative">
+          <img src="assets/images/host.jpg" alt="Prakash Thapa" class="w-full h-full object-cover filter sepia-[15%]">
+          <div class="absolute inset-0 bg-gradient-to-t from-forest-950/20 via-transparent to-transparent"></div>
+        </div>
+
+        <!-- Text content -->
+        <div class="md:col-span-7 flex flex-col gap-4 text-left">
+          <span class="text-[10px] uppercase tracking-[0.3em] text-gold-500 font-bold">The Host's Heritage</span>
+          <h2 class="text-2xl md:text-4xl font-serif font-medium text-forest-950 dark:text-cream-100 leading-tight">
+            Meet The Heart Behind White Sea
+          </h2>
+          
+          <p class="text-xs md:text-sm font-light leading-relaxed text-forest-800/80 dark:text-cream-200/80">
+            "I was born in these hills, and after spending a decade working in the bustle of metropolitan cities, I realized that the true luxury of our time is silence. I returned to Dow Hill to build White Sea—a place where people can disconnect from calendars and reconnect with themselves."
+          </p>
+          
+          <p class="text-xs md:text-sm font-light leading-relaxed text-forest-800/80 dark:text-cream-200/80">
+            Whether preparing our signature fire-roasted thali, setting up the evening bonfire, or mapping out secret walking paths, I want your experience to be warm, real, and memorable.
+          </p>
+
+          <div class="flex items-center gap-6 mt-2">
+            <div>
+              <div class="text-sm font-serif text-gold-500">Prakash Thapa</div>
+              <div class="text-[8px] uppercase tracking-widest text-forest-600/60 dark:text-cream-300/40">Founder & Host</div>
+            </div>
+            <!-- Handwriting Signature SVG -->
+            <svg class="w-28 h-10 text-gold-500 opacity-80" viewBox="0 0 150 50">
+              <path d="M15 35 C 30 15, 45 5, 55 25 C 65 45, 75 10, 85 20 C 95 30, 110 35, 130 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- SCENE 5: EXPLORE THE PROPERTY (5.0 - 6.7)             -->
+    <!-- ---------------------------------------------------- -->
+    <div id="scene5" class="scene-overlay absolute inset-0 w-full h-full flex flex-col justify-between p-6 z-20 pointer-events-none">
+      
+      <!-- Top header -->
+      <div class="text-center mt-4">
+        <span class="text-[9px] uppercase tracking-[0.3em] text-gold-500 font-bold mb-0.5 block">Interior Discovery</span>
+        <h2 class="text-xl md:text-3xl font-serif text-forest-950 dark:text-cream-100">Step Inside The Sanctuary</h2>
+      </div>
+
+      <!-- INTERACTIVE HOTSPOTS (PROJECTED VIA JS) -->
+      <div class="absolute inset-0 w-full h-full pointer-events-none">
+        <button 
+          *ngFor="let h of projectedHotspots"
+          (click)="selectHotspot(h)"
+          [style.left.%]="h.x"
+          [style.top.%]="h.y"
+          class="absolute -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full border border-gold-400 bg-forest-950/70 text-cream-100 flex items-center justify-center hover:scale-125 hover:bg-gold-500 transition-all duration-300 pointer-events-auto shadow-lg"
+          [title]="h.name"
+        >
+          <span class="absolute inset-0 rounded-full border border-gold-400 animate-ping"></span>
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Main Layout: Grid of Left (Room switch) and Right (Room details) -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 w-full max-w-7xl mx-auto items-end mb-12 px-4 pointer-events-none">
+        
+        <!-- LEFT COLUMN: ROOM SELECTOR TABS -->
+        <div class="md:col-span-3 flex flex-col gap-3 pointer-events-auto">
+          <span class="text-[8px] uppercase tracking-wider text-forest-800 dark:text-cream-200/60 font-bold">Select Category</span>
+          <div 
+            *ngFor="let room of rooms; let idx = index" 
+            [ngClass]="selectedRoomIndex === idx ? 'border-gold-400 bg-gold-400/10' : 'border-forest-950/10 dark:border-white/10 bg-forest-950/5 dark:bg-white/5'"
+            (click)="selectRoomExplore(idx)"
+            class="border rounded-xl p-4 cursor-pointer hover:border-gold-400 transition-all duration-300 text-left flex flex-col gap-1 backdrop-blur-sm"
+          >
+            <h4 class="text-xs font-serif font-bold text-forest-950 dark:text-cream-100">{{ room.name }}</h4>
+            <div class="flex justify-between items-center text-[9px] text-gold-400 mt-1">
+              <span>₹{{ room.pricePerNight }}<span class="text-[7px] text-forest-700/60 dark:text-cream-200/40">/night</span></span>
+              <span class="text-[7px] font-sans uppercase text-forest-850/60 dark:text-cream-200/50">{{ room.viewType.split(' ')[0] }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTER AREA: ACTIVE HOTSPOT DETAIL PANEL -->
+        <div class="md:col-span-5 flex justify-center items-center pointer-events-none min-h-[100px]">
+          <div 
+            *ngIf="activeHotspotObj" 
+            class="w-full max-w-xs p-5 rounded-2xl glass-panel border border-forest-950/10 dark:border-white/5 shadow-2xl pointer-events-auto flex flex-col gap-2 text-left animate-fade-in mb-8"
+          >
+            <div class="flex justify-between items-center">
+              <h3 class="text-xs font-serif font-bold text-forest-950 dark:text-cream-100">{{ activeHotspotObj.name }}</h3>
+              <button (click)="deselectHotspot()" class="text-gold-400 hover:text-gold-500 font-sans text-[10px]">✕</button>
+            </div>
+            <p class="text-[10px] font-light leading-relaxed text-forest-800/80 dark:text-cream-200/85">
+              {{ activeHotspotObj.desc }}
+            </p>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: CHOSEN ROOM DETAILS PANEL -->
+        <div 
+          *ngIf="rooms.length > 0" 
+          class="md:col-span-4 p-5 rounded-3xl glass-panel border border-forest-950/10 dark:border-white/5 shadow-2xl pointer-events-auto flex flex-col gap-3 text-left w-full h-fit backdrop-blur-sm"
+        >
+          <!-- Room Image Slider -->
+          <div class="h-[180px] w-full rounded-2xl overflow-hidden relative border border-forest-950/5 dark:border-white/5 shadow-md flex-shrink-0 group">
+            <img [src]="rooms[selectedRoomIndex].images[activeImageIndex]" [alt]="rooms[selectedRoomIndex].name" class="w-full h-full object-cover transition-all duration-500">
+            
+            <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest font-semibold bg-forest-950/80 text-cream-100 px-2.5 py-0.5 rounded-full z-10">
+              {{ rooms[selectedRoomIndex].viewType }}
+            </span>
+
+            <!-- Navigation Chevrons -->
+            <button 
+              (click)="prevRoomImage($event)" 
+              class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-forest-950/70 hover:bg-gold-500 text-cream-100 hover:text-forest-950 flex items-center justify-center pointer-events-auto transition-all duration-300 shadow z-10 opacity-0 group-hover:opacity-100"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </button>
+            <button 
+              (click)="nextRoomImage($event)" 
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-forest-950/70 hover:bg-gold-500 text-cream-100 hover:text-forest-950 flex items-center justify-center pointer-events-auto transition-all duration-300 shadow z-10 opacity-0 group-hover:opacity-100"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+
+            <!-- Dots Indicator -->
+            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10 pointer-events-auto">
+              <button 
+                *ngFor="let img of rooms[selectedRoomIndex].images; let i = index"
+                (click)="activeImageIndex = i; $event.stopPropagation()"
+                [ngClass]="activeImageIndex === i ? 'bg-gold-400 w-3' : 'bg-cream-100/50 hover:bg-cream-100 w-1'"
+                class="h-1 rounded-full transition-all duration-300"
+              ></button>
+            </div>
+          </div>
+
+          <!-- Room Title -->
+          <div class="flex justify-between items-start mt-1">
+            <div>
+              <h3 class="text-sm font-serif font-bold text-forest-950 dark:text-cream-100 leading-tight">
+                {{ rooms[selectedRoomIndex].name }}
+              </h3>
+            </div>
+            <div class="text-right">
+              <span class="text-[9px] text-forest-700/60 dark:text-cream-300/40 block">Per Night</span>
+              <span class="text-sm font-serif text-gold-400 font-bold">₹{{ rooms[selectedRoomIndex].pricePerNight }}</span>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="text-[10px] font-light leading-relaxed text-forest-800/80 dark:text-cream-200/75">
+            {{ rooms[selectedRoomIndex].description }}
+          </p>
+
+          <!-- Facilities Grid -->
+          <div class="flex flex-col gap-1.5 pt-2 border-t border-forest-950/5 dark:border-white/5">
+            <span class="text-[8px] uppercase tracking-wider text-forest-800 dark:text-cream-200/60 font-bold">Room Facilities</span>
+            <div class="grid grid-cols-2 gap-2">
+              <div 
+                *ngFor="let facility of rooms[selectedRoomIndex].amenities" 
+                class="flex items-center gap-1.5 text-[9px] text-forest-800/80 dark:text-cream-200/70"
+              >
+                <span class="w-1 h-1 bg-gold-400 transform rotate-45 flex-shrink-0"></span>
+                <span class="truncate" [title]="facility">{{ facility }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTAs -->
+          <div class="grid grid-cols-2 gap-3 pt-3 border-t border-forest-950/5 dark:border-white/5">
+            <button 
+              (click)="navigateToBooking()"
+              class="py-2.5 rounded-xl bg-forest-950 text-cream-100 dark:bg-gold-500 hover:bg-gold-500 dark:hover:bg-cream-100 dark:hover:text-forest-950 text-[9px] uppercase tracking-widest font-bold transition-all duration-300 shadow-md"
+            >
+              Book Room
+            </button>
+            <button 
+              (click)="resumeJourney()"
+              class="py-2.5 rounded-xl border border-forest-950/20 dark:border-white/10 text-forest-850 dark:text-cream-200 hover:bg-forest-950/5 dark:hover:bg-white/5 text-[9px] uppercase tracking-widest font-semibold transition-all duration-300"
+            >
+              Resume Scroll
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- SCENE 6: MOUNTAIN EXPERIENCES (6.5 - 7.7)            -->
+    <!-- ---------------------------------------------------- -->
+    <div id="scene6" class="scene-overlay absolute inset-0 w-full h-full flex items-center justify-end p-6 md:p-16 z-20">
+      <div class="w-full max-w-xl p-8 rounded-3xl glass-panel border border-forest-950/10 dark:border-white/5 shadow-2xl pointer-events-auto flex flex-col gap-6 text-left">
+        <div>
+          <span class="text-[10px] uppercase tracking-[0.35em] text-gold-500 font-bold mb-1 block">Local Journeys</span>
+          <h2 class="text-2xl md:text-4xl font-serif text-forest-950 dark:text-cream-100">Dow Hill Trails & Secrets</h2>
+        </div>
+        
+        <div class="flex flex-col gap-4">
+          <!-- Experience Items -->
+          <div *ngFor="let item of attractions; let idx = index" class="flex gap-4 items-start border-b border-forest-950/5 dark:border-white/5 pb-3">
+            <span class="font-serif text-gold-500 text-sm">0{{ idx + 1 }}</span>
+            <div>
+              <div class="flex justify-between items-baseline">
+                <h3 class="text-sm font-serif font-medium text-forest-950 dark:text-cream-100">{{ item.name }}</h3>
+                <span class="text-[8px] text-gold-400 uppercase tracking-widest">{{ item.time }}</span>
+              </div>
+              <p class="text-[11px] font-light text-forest-800/70 dark:text-cream-200/60 mt-0.5">{{ item.desc }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- SCENE 7: MEMORIES OF GUESTS (7.5 - 8.7)              -->
+    <!-- ---------------------------------------------------- -->
+    <div id="scene7" class="scene-overlay absolute inset-0 w-full h-full flex items-center justify-center p-6 z-20">
+      <div class="w-full max-w-4xl flex flex-col gap-8 text-center items-center pointer-events-auto">
+        <span class="text-[10px] uppercase tracking-[0.35em] text-gold-500 font-bold">Guest Stories</span>
+        <h2 class="text-2xl md:text-5xl font-serif text-forest-950 dark:text-cream-100">Stories Written By Our Guests</h2>
+
+        <!-- FLOATING MEMORY CARD LAYOUT -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-3xl">
+          <div *ngFor="let t of testimonials; let idx = index" class="glass-card p-4 rounded-2xl flex flex-col gap-3 text-left shadow-lg transform hover:-translate-y-2 transition-all duration-300">
+            <!-- Testimonial Image -->
+            <div class="h-[120px] w-full rounded-xl overflow-hidden mb-1 relative border border-forest-950/5 dark:border-white/5">
+              <img [src]="t.image" [alt]="t.name" class="w-full h-full object-cover">
+            </div>
+
+            <div class="flex gap-1 text-gold-400">
+              <svg *ngFor="let s of [1,2,3,4,5]" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            
+            <p class="text-[11px] font-light italic leading-relaxed text-forest-800/80 dark:text-cream-200/80 line-clamp-4">
+              "{{ t.text }}"
+            </p>
+            
+            <div class="mt-auto border-t border-forest-950/5 dark:border-white/5 pt-2">
+              <div class="text-[11px] font-semibold text-forest-950 dark:text-cream-100">{{ t.name }}</div>
+              <div class="text-[9px] uppercase tracking-widest text-forest-600/50 dark:text-cream-300/40 mt-0.5">{{ t.loc }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- SCENE 8: DAY TO NIGHT TRANSFORMATION (8.5 - 9.4)     -->
+    <!-- ---------------------------------------------------- -->
+    <div id="scene8" class="scene-overlay absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center px-6 z-20">
+      <div class="max-w-2xl flex flex-col items-center gap-4">
+        <span class="text-[10px] uppercase tracking-[0.35em] text-gold-500 font-bold block animate-pulse">Nightfall</span>
+        <h2 class="text-3xl md:text-6xl font-serif text-forest-950 dark:text-cream-100 leading-none">
+          As Dusk Falls, The Retreat Awakens
+        </h2>
+        <p class="text-sm font-light text-forest-800/80 dark:text-cream-200/70 leading-relaxed max-w-lg">
+          The sun dips below the peaks. Golden light gives way to a sky filled with stars, fireflies floating in the garden, and the crackle of a warm bonfire.
+        </p>
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- SCENE 9: BOOKING EXPERIENCE (9.0 - 9.8)              -->
+    <!-- ---------------------------------------------------- -->
+    <div id="scene9" class="scene-overlay absolute inset-0 w-full h-full flex items-center justify-center p-6 z-20">
+      
+      <!-- STEP 1: DATES & ROOM SELECTION -->
+      <div *ngIf="bookingStep === 1" class="w-full max-w-2xl p-6 md:p-8 rounded-3xl glass-panel border border-white/10 shadow-2xl pointer-events-auto flex flex-col gap-5 text-left animate-fade-in">
+        <div class="text-center md:text-left flex justify-between items-baseline">
+          <div>
+            <span class="text-[9px] uppercase tracking-[0.35em] text-gold-500 font-bold block mb-1">Check Availability</span>
+            <h2 class="text-xl md:text-3xl font-serif text-forest-950 dark:text-cream-100">Reserve Your Mountain Memory</h2>
+          </div>
+          <span class="text-[9px] uppercase tracking-wider text-gold-400 font-semibold">Step 1 of 4</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Check In -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[8px] uppercase tracking-wider text-forest-800 dark:text-cream-200/60 font-semibold">Check In</label>
+            <input 
+              type="date" 
+              [min]="minCheckInDate"
+              [ngModel]="bookingService.checkIn()"
+              (ngModelChange)="bookingService.checkIn.set($event); onCheckInChange()"
+              class="w-full bg-forest-950/5 dark:bg-white/5 border border-forest-950/10 dark:border-white/10 rounded-xl px-4 py-2.5 text-xs text-forest-900 dark:text-cream-100 focus:outline-none focus:border-gold-500"
+            >
+          </div>
+          
+          <!-- Check Out -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[8px] uppercase tracking-wider text-forest-800 dark:text-cream-200/60 font-semibold">Check Out</label>
+            <input 
+              type="date" 
+              [min]="minCheckOutDate"
+              [ngModel]="bookingService.checkOut()"
+              (ngModelChange)="bookingService.checkOut.set($event)"
+              class="w-full bg-forest-950/5 dark:bg-white/5 border border-forest-950/10 dark:border-white/10 rounded-xl px-4 py-2.5 text-xs text-forest-900 dark:text-cream-100 focus:outline-none focus:border-gold-500"
+            >
+          </div>
+
+          <!-- Guests -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[8px] uppercase tracking-wider text-forest-800 dark:text-cream-200/60 font-semibold">Guests</label>
+            <select 
+              [ngModel]="bookingService.guestsCount()"
+              (ngModelChange)="bookingService.guestsCount.set(+$event)"
+              class="w-full bg-forest-950/5 dark:bg-white/5 border border-forest-950/10 dark:border-white/10 rounded-xl px-4 py-2.5 text-xs text-forest-900 dark:text-cream-100 focus:outline-none focus:border-gold-500 dark:bg-forest-950"
+            >
+              <option *ngFor="let num of getGuestsOptions()" [value]="num" class="dark:text-forest-950">{{ num }} Guest{{ num > 1 ? 's' : '' }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Room Options list -->
+        <div class="flex flex-col gap-2">
+          <label class="text-[8px] uppercase tracking-wider text-forest-800 dark:text-cream-200/60 font-semibold">Choose Sanctuary Room</label>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div 
+              *ngFor="let room of rooms" 
+              [ngClass]="bookingService.selectedRoom()?.id === room.id ? 'border-gold-400 bg-gold-400/10' : 'border-forest-950/10 dark:border-white/10'"
+              (click)="selectRoom(room)"
+              class="border rounded-2xl p-3 cursor-pointer hover:border-gold-400 transition-all duration-300 flex flex-col gap-1.5 bg-forest-950/5 dark:bg-white/5"
+            >
+              <h4 class="text-xs font-serif font-bold text-forest-950 dark:text-cream-100">{{ room.name }}</h4>
+              <p class="text-[9px] font-light text-forest-800/70 dark:text-cream-200/60 line-clamp-2 leading-relaxed">{{ room.description }}</p>
+              <div class="mt-auto pt-1 flex justify-between items-center text-[9px]">
+                <span class="text-gold-400 font-semibold">₹{{ room.pricePerNight }}<span class="text-[7px] font-light text-forest-700/60 dark:text-cream-200/40">/night</span></span>
+                <span class="text-[7px] text-forest-700/50 dark:text-cream-200/40 font-mono">{{ room.viewType.split(' ')[0] }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next button -->
+        <button 
+          (click)="nextBookingStep()"
+          class="w-full py-3.5 rounded-xl bg-forest-950 text-cream-100 dark:bg-gold-500 hover:bg-gold-500 dark:hover:bg-cream-100 dark:hover:text-forest-950 text-xs uppercase tracking-widest font-semibold transition-all duration-500 shadow-md"
+        >
+          Book Selected Sanctuary
+        </button>
+      </div>
+
+      <!-- STEP 2: GUEST DETAILS FORM -->
+      <div *ngIf="bookingStep === 2" class="w-full max-w-2xl p-6 md:p-8 rounded-3xl glass-panel border border-white/10 shadow-2xl pointer-events-auto flex flex-col gap-4 text-left animate-fade-in">
+        <div class="flex justify-between items-baseline">
+          <div>
+            <span class="text-[9px] uppercase tracking-[0.35em] text-gold-500 font-bold block mb-1">Information</span>
+            <h2 class="text-xl md:text-3xl font-serif text-forest-950 dark:text-cream-100">Guest Information</h2>
+          </div>
+          <span class="text-[9px] uppercase tracking-wider text-gold-400 font-semibold">Step 2 of 4</span>
+        </div>
+        <div class="w-full h-[1px] bg-forest-950/10 dark:bg-white/5"></div>
+
+        <form [formGroup]="guestForm" class="flex flex-col gap-4">
+          <!-- Full Name -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9px] uppercase tracking-widest text-forest-800 dark:text-cream-300/60 font-semibold">Full Name</label>
+            <input 
+              type="text" 
+              formControlName="name"
+              placeholder="e.g. John Doe"
+              [ngClass]="guestForm.get('name')?.invalid && guestForm.get('name')?.touched ? 'border-red-500' : 'border-forest-950/15 dark:border-white/10'"
+              class="px-4 py-2.5 rounded-xl border bg-transparent text-xs focus:outline-none focus:border-gold-400 dark:text-white"
+            >
+            <span *ngIf="guestForm.get('name')?.invalid && guestForm.get('name')?.touched" class="text-[8px] text-red-500">Name is required (min 3 characters).</span>
+          </div>
+
+          <!-- Contact grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Email -->
+            <div class="flex flex-col gap-1">
+              <label class="text-[9px] uppercase tracking-widest text-forest-800 dark:text-cream-300/60 font-semibold">Email Address</label>
+              <input 
+                type="email" 
+                formControlName="email"
+                placeholder="e.g. email@domain.com"
+                [ngClass]="guestForm.get('email')?.invalid && guestForm.get('email')?.touched ? 'border-red-500' : 'border-forest-950/15 dark:border-white/10'"
+                class="px-4 py-2.5 rounded-xl border bg-transparent text-xs focus:outline-none focus:border-gold-400 dark:text-white"
+              >
+              <span *ngIf="guestForm.get('email')?.invalid && guestForm.get('email')?.touched" class="text-[8px] text-red-500">Enter a valid email.</span>
+            </div>
+
+            <!-- Phone -->
+            <div class="flex flex-col gap-1">
+              <label class="text-[9px] uppercase tracking-widest text-forest-800 dark:text-cream-300/60 font-semibold">Phone Number</label>
+              <input 
+                type="tel" 
+                formControlName="phone"
+                placeholder="e.g. 9876543210"
+                [ngClass]="guestForm.get('phone')?.invalid && guestForm.get('phone')?.touched ? 'border-red-500' : 'border-forest-950/15 dark:border-white/10'"
+                class="px-4 py-2.5 rounded-xl border bg-transparent text-xs focus:outline-none focus:border-gold-400 dark:text-white"
+              >
+              <span *ngIf="guestForm.get('phone')?.invalid && guestForm.get('phone')?.touched" class="text-[8px] text-red-500">Enter valid 10-digit number.</span>
+            </div>
+          </div>
+
+          <!-- Special Requests -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9px] uppercase tracking-widest text-forest-800 dark:text-cream-300/60 font-semibold">Special Requests (Optional)</label>
+            <textarea 
+              formControlName="specialRequests"
+              rows="2"
+              placeholder="Dietary preferences, arrival hours, bedding setups..."
+              class="px-4 py-2.5 rounded-xl border border-forest-950/15 dark:border-white/10 bg-transparent text-xs focus:outline-none focus:border-gold-400 dark:text-white resize-none"
+            ></textarea>
+          </div>
+        </form>
+
+        <!-- Actions -->
+        <div class="flex justify-between items-center mt-3">
+          <button (click)="prevBookingStep()" class="text-[10px] uppercase tracking-widest text-forest-800 dark:text-cream-200 hover:text-gold-400 transition-colors">
+            ← Back
+          </button>
+          <button 
+            (click)="nextBookingStep()" 
+            class="px-6 py-3 rounded-xl bg-forest-950 text-cream-100 dark:bg-gold-500 hover:bg-gold-500 dark:hover:bg-cream-100 dark:hover:text-forest-950 text-[10px] uppercase tracking-widest font-semibold transition-all duration-300"
+          >
+            Review Summary
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: REVIEW & INVOICE SUMMARY -->
+      <div *ngIf="bookingStep === 3" class="w-full max-w-3xl p-6 md:p-8 rounded-3xl glass-panel border border-white/10 shadow-2xl pointer-events-auto flex flex-col gap-4 text-left animate-fade-in">
+        <div class="flex justify-between items-baseline">
+          <div>
+            <span class="text-[9px] uppercase tracking-[0.35em] text-gold-500 font-bold block mb-1">Checkout</span>
+            <h2 class="text-xl md:text-3xl font-serif text-forest-950 dark:text-cream-100">Review & Confirmation</h2>
+          </div>
+          <span class="text-[9px] uppercase tracking-wider text-gold-400 font-semibold">Step 3 of 4</span>
+        </div>
+        <div class="w-full h-[1px] bg-forest-950/10 dark:bg-white/5"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+          <!-- Summary Details -->
+          <div class="md:col-span-7 flex flex-col gap-4">
+            <div class="grid grid-cols-2 gap-3 text-[10px] font-light">
+              <div>
+                <span class="text-forest-700 dark:text-cream-300/40 block text-[8px] uppercase tracking-wider">Sanctuary Room</span>
+                <span class="font-medium text-xs text-forest-950 dark:text-cream-100">{{ bookingService.selectedRoom()?.name }}</span>
+              </div>
+              <div>
+                <span class="text-forest-700 dark:text-cream-300/40 block text-[8px] uppercase tracking-wider">Guests</span>
+                <span class="font-medium text-xs text-forest-950 dark:text-cream-100">{{ bookingService.guestsCount() }} Guest(s)</span>
+              </div>
+              <div>
+                <span class="text-forest-700 dark:text-cream-300/40 block text-[8px] uppercase tracking-wider">Check-In</span>
+                <span class="font-medium text-xs text-forest-950 dark:text-cream-100">{{ bookingService.checkIn() }}</span>
+              </div>
+              <div>
+                <span class="text-forest-700 dark:text-cream-300/40 block text-[8px] uppercase tracking-wider">Check-Out</span>
+                <span class="font-medium text-xs text-forest-950 dark:text-cream-100">{{ bookingService.checkOut() }}</span>
+              </div>
+              <div class="col-span-2">
+                <span class="text-forest-700 dark:text-cream-300/40 block text-[8px] uppercase tracking-wider">Guest Name & Contact</span>
+                <span class="font-medium text-xs text-forest-950 dark:text-cream-100">{{ guestForm.value.name }} ({{ guestForm.value.phone }})</span>
+              </div>
+              <div class="col-span-2" *ngIf="bookingService.specialRequests()">
+                <span class="text-forest-700 dark:text-cream-300/40 block text-[8px] uppercase tracking-wider">Special Requests</span>
+                <span class="italic text-forest-800 dark:text-cream-200/70">{{ bookingService.specialRequests() }}</span>
+              </div>
+            </div>
+
+            <div class="w-full h-[1px] bg-forest-950/10 dark:bg-white/5"></div>
+
+            <!-- Promo Code Input -->
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[9px] uppercase tracking-widest text-forest-800 dark:text-cream-300/60 font-semibold">Have a Promo Code?</label>
+              <div class="flex gap-2">
+                <input 
+                  type="text" 
+                  [(ngModel)]="enteredCoupon"
+                  placeholder="e.g. HIMALAYAS"
+                  [disabled]="!!bookingService.promoCode()"
+                  class="flex-grow px-3 py-2 rounded-xl border border-forest-950/15 dark:border-white/10 bg-transparent text-xs focus:outline-none focus:border-gold-400 dark:text-white"
+                >
+                <button 
+                  *ngIf="!bookingService.promoCode()"
+                  (click)="applyCoupon()"
+                  class="px-4 py-2 rounded-xl border border-gold-400 text-gold-400 hover:bg-gold-400 hover:text-white text-[9px] uppercase tracking-widest font-semibold transition-all"
+                >
+                  Apply
+                </button>
+                <button 
+                  *ngIf="bookingService.promoCode()"
+                  (click)="removeCoupon()"
+                  class="px-4 py-2 rounded-xl border border-red-500 text-red-500 hover:bg-red-500 hover:text-white text-[9px] uppercase tracking-widest font-semibold transition-all"
+                >
+                  Remove
+                </button>
+              </div>
+              <span *ngIf="couponSuccess" class="text-[8px] text-green-600 font-medium">{{ couponSuccess }}</span>
+              <span *ngIf="couponError" class="text-[8px] text-red-500 font-medium">{{ couponError }}</span>
+            </div>
+          </div>
+
+          <!-- Pricing math and Confirm Pay -->
+          <div class="md:col-span-5 flex flex-col gap-4 border-t md:border-t-0 md:border-l border-forest-950/10 dark:border-white/5 pt-4 md:pt-0 md:pl-6">
+            <h3 class="text-xs font-serif text-forest-950 dark:text-cream-100 font-medium uppercase tracking-wider">Pricing Summary</h3>
+            
+            <div class="flex flex-col gap-2 text-[10px] font-light text-forest-800 dark:text-cream-200/80">
+              <div class="flex justify-between">
+                <span>₹{{ bookingService.selectedRoom()?.pricePerNight }} × {{ bookingService.nightsCount() }} Night(s)</span>
+                <span class="font-medium">₹{{ bookingService.subtotal() }}</span>
+              </div>
+              <div class="flex justify-between" *ngIf="bookingService.discount() > 0">
+                <span>Discount (15%)</span>
+                <span class="font-medium text-green-600">-₹{{ bookingService.discount() }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span>GST Tax (12%)</span>
+                <span class="font-medium">₹{{ bookingService.gstTax() }}</span>
+              </div>
+              <div class="w-full h-[1px] bg-forest-950/10 dark:bg-white/5 my-0.5"></div>
+              <div class="flex justify-between text-xs font-serif font-semibold text-forest-950 dark:text-cream-100">
+                <span>Total Amount</span>
+                <span class="text-gold-400">₹{{ bookingService.totalAmount() }}</span>
+              </div>
+            </div>
+
+            <button 
+              (click)="triggerCheckout()"
+              class="w-full py-3 rounded-xl bg-forest-950 text-cream-100 dark:bg-gold-500 hover:bg-gold-500 dark:hover:bg-cream-100 dark:hover:text-forest-950 text-[10px] uppercase tracking-widest font-semibold transition-all duration-300 shadow-md"
+            >
+              Confirm & Pay
+            </button>
+
+            <!-- Secure notice -->
+            <div class="flex items-center justify-center gap-1.5 text-[7px] uppercase tracking-wider text-forest-750/50 dark:text-cream-300/40">
+              <svg class="w-3 h-3 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+              Secured Payments via Razorpay
+            </div>
+          </div>
+        </div>
+
+        <!-- Go back -->
+        <button (click)="prevBookingStep()" class="text-[9px] uppercase tracking-widest text-forest-800 dark:text-cream-200 hover:text-gold-400 transition-colors mt-2 self-start">
+          ← Go Back
+        </button>
+      </div>
+
+      <!-- STEP 4: CONNECTING TO RAZORPAY LOADER OVERLAY -->
+      <div *ngIf="isProcessingPayment" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-forest-950/80 backdrop-blur-md text-cream-100 rounded-3xl">
+        <div class="flex flex-col items-center gap-5 max-w-xs text-center px-4">
+          <div class="w-10 h-10 rounded-full border-t-2 border-r-2 border-gold-400 animate-spin"></div>
+          <h3 class="text-base font-serif text-gold-400">Connecting to Razorpay</h3>
+          <p class="text-[10px] font-light text-cream-200/60 leading-relaxed">
+            Please do not refresh this page. We are securely creating your booking session and initializing payment gateways...
+          </p>
+        </div>
+      </div>
+
+      <!-- STEP 5: BOOKING CONFIRMATION & LUXURY TICKET -->
+      <div *ngIf="bookingStep === 5" class="w-full max-w-lg p-6 rounded-3xl glass-panel border border-white/10 shadow-2xl pointer-events-auto flex flex-col items-center gap-5 text-center animate-fade-in">
+        <div class="w-10 h-10 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-500 shadow-md">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-serif text-forest-950 dark:text-cream-100 font-medium">Sanctuary Reserved</h2>
+          <p class="text-[9px] text-forest-800/80 dark:text-cream-200/60 mt-1">A confirmation email has been sent. Your luxury mountain ticket is ready.</p>
+        </div>
+
+        <!-- Luxury Ticket Design -->
+        <div class="w-full rounded-2xl overflow-hidden shadow-xl border border-gold-400/25 bg-forest-950 text-cream-100 relative text-left">
+          <!-- Notch cuts -->
+          <div class="absolute left-[-8px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-cream-100 dark:bg-forest-950 z-20"></div>
+          <div class="absolute right-[-8px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-cream-100 dark:bg-forest-950 z-20"></div>
+
+          <!-- Ticket Header -->
+          <div class="bg-forest-900 px-6 py-4 flex justify-between items-center border-b border-white/5">
+            <div>
+              <span class="text-[7px] uppercase tracking-widest text-cream-300/40 block">Booking Reference</span>
+              <span class="text-xs font-semibold tracking-wider text-gold-400">{{ bookingResultId }}</span>
+            </div>
+            <div class="text-right">
+              <span class="text-[7px] uppercase tracking-widest text-cream-300/40 block">Location</span>
+              <span class="text-[9px] uppercase tracking-wide text-cream-100">Dow Hill, Kurseong</span>
+            </div>
+          </div>
+
+          <!-- Ticket Body -->
+          <div class="px-6 py-4 flex flex-col gap-4">
+            <div>
+              <span class="text-[7px] uppercase tracking-widest text-cream-300/40 block">Sanctuary Room Category</span>
+              <h3 class="text-sm font-serif text-gold-400 mt-0.5">{{ bookingService.selectedRoom()?.name }}</h3>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-[10px] font-light text-cream-200/80">
+              <div>
+                <span class="text-[7px] uppercase tracking-widest text-cream-300/40 block">Check-In Date</span>
+                <span class="font-medium text-cream-100">{{ bookingService.checkIn() }}</span>
+              </div>
+              <div>
+                <span class="text-[7px] uppercase tracking-widest text-cream-300/40 block">Check-Out Date</span>
+                <span class="font-medium text-cream-100">{{ bookingService.checkOut() }}</span>
+              </div>
+              <div>
+                <span class="text-[7px] uppercase tracking-widest text-cream-300/40 block">Nights Count</span>
+                <span class="font-medium text-cream-100">{{ bookingService.nightsCount() }} Night(s)</span>
+              </div>
+              <div>
+                <span class="text-[7px] uppercase tracking-widest text-cream-300/40 block">Guests Reserved</span>
+                <span class="font-medium text-cream-100">{{ bookingService.guestsCount() }} Guest(s)</span>
+              </div>
+            </div>
+
+            <div class="border-t border-dashed border-white/10 my-0.5"></div>
+
+            <div class="flex justify-between items-center text-[10px]">
+              <span class="text-[7px] uppercase tracking-widest text-cream-300/40">Amount Paid (GST Incl.)</span>
+              <span class="text-sm font-serif font-semibold text-gold-400">₹{{ bookingService.totalAmount() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- WhatsApp + Return Button -->
+        <div class="flex flex-col w-full gap-2 mt-2">
+          <a 
+            [href]="getWhatsAppLink()"
+            target="_blank"
+            class="w-full py-3 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-[10px] uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-all shadow-md"
+          >
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.733-1.455L0 24zm6.29-4.18c1.677.994 3.502 1.517 5.705 1.518 5.7 0 10.337-4.636 10.341-10.342.002-2.76-1.074-5.357-3.031-7.315-1.956-1.957-4.551-3.031-7.315-3.032-5.702 0-10.34 4.637-10.344 10.344-.001 1.944.505 3.839 1.47 5.534l-.979 3.576 3.654-.959zM18.23 15.34c-.34-.17-2.01-.99-2.324-1.1-.312-.115-.54-.17-.768.17-.227.34-.88 1.1-.1 1.185.228.085.65.17.65.17s.456-.255.74-.483c.228-.182.4-.41.4-.41s-.114-.085-.312-.17zm-6.23-7.51c-.114-.228-.228-.228-.34-.228s-.228 0-.34 0c-.114 0-.312.056-.455.2a2.383 2.383 0 00-.739 1.763c0 1.052.768 2.076.88 2.218.114.142 1.507 2.304 3.654 3.23.51.22.91.353 1.223.454.512.162.978.139 1.348.084.412-.061 1.25-.512 1.428-1.01s.178-.923.128-1.011c-.05-.088-.178-.142-.512-.312z"/></svg>
+            Confirm Status via WhatsApp
+          </a>
+
+          <button 
+            (click)="resetBookingWizard()"
+            class="w-full py-3 rounded-xl border border-forest-950/20 dark:border-white/10 text-forest-800 dark:text-cream-200 hover:bg-forest-950/5 dark:hover:bg-white/5 text-[10px] uppercase tracking-widest font-semibold transition-all"
+          >
+            New Reservation
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- SCENE 10: FINAL EMOTIONAL MOMENT (9.7 - 10.0)        -->
+    <!-- ---------------------------------------------------- -->
+    <div id="scene10" class="scene-overlay absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center px-6 z-20">
+      <div class="max-w-4xl flex flex-col items-center gap-6">
+        <span class="text-[10px] uppercase tracking-[0.4em] text-gold-500 font-bold block animate-pulse">Sunrise on Peaks</span>
+        <h2 class="text-4xl md:text-7xl font-serif font-bold text-forest-950 dark:text-cream-100 leading-tight">
+          Your Mountain Story<br>
+          <span class="text-stroke-gold dark:text-stroke-gold italic">Begins Here</span>
+        </h2>
+        
+        <div class="w-24 h-[1px] bg-gold-400"></div>
+        <p class="max-w-xl mx-auto text-sm md:text-lg text-forest-800/80 dark:text-cream-200/80 font-light leading-relaxed mb-6">
+          Wake up above the clouds. Feel the pine wind, taste the tea garden valleys, and create memories that stay forever.
+        </p>
+
+        <!-- Final CTAs -->
+        <div class="flex flex-col sm:flex-row gap-5 pointer-events-auto">
+          <button 
+            (click)="scrollToScene(0.92)"
+            class="px-8 py-4 rounded-full bg-forest-950 text-cream-100 dark:bg-gold-500 dark:text-cream-100 hover:bg-gold-500 dark:hover:bg-cream-100 dark:hover:text-forest-950 shadow-lg text-xs uppercase tracking-widest font-semibold transition-all duration-500"
+          >
+            Book Your Stay
+          </button>
+          
+          <div class="relative group">
+            <button 
+              class="px-8 py-4 rounded-full border border-forest-950/20 dark:border-cream-100/20 text-forest-950 dark:text-cream-100 hover:bg-forest-950/5 dark:hover:bg-cream-100/5 text-xs uppercase tracking-widest font-medium transition-all duration-500"
+            >
+              Contact The Host
+            </button>
+            <!-- Hover details cards -->
+            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 p-4 rounded-xl glass-panel text-[11px] font-light flex flex-col gap-2 shadow-xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+              <span class="font-serif font-bold text-gold-500">Prakash Thapa</span>
+              <a href="tel:+919876543210" class="hover:text-gold-400 flex items-center gap-2">📞 +91 98765 43210</a>
+              <a href="mailto:stay@whiteseahomestay.com" class="hover:text-gold-400 flex items-center gap-2">✉️ stay&#64;whiteseahomestay.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footnote credits -->
+      <div class="absolute bottom-6 w-full text-center text-[9px] uppercase tracking-widest text-forest-700/40 dark:text-cream-200/30">
+        © 2026 White Sea Homestay • Designed for Luxury Mountain Hospitality
+      </div>
+    </div>
+
+  </div>
+</div>
